@@ -1,7 +1,7 @@
 import { CITY_AR } from "@/lib/i18n/content";
 import type { Order } from "@/lib/store/catalog";
 
-const STORE_NAME = "ATHAR & OWL";
+const STORE_NAME = "My Store";
 
 const plain = (value: number) => String(Number(value.toFixed(2)));
 
@@ -53,19 +53,20 @@ export function buildInvoiceHtml(order: Order) {
 <meta charset="utf-8" />
 <title>${esc(order.ref)}</title>
 <style>
-  /* margin 0 hides the browser's own date / title / address header and footer; the invoice prints its own */
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; }
   body { margin: 0; padding: 12mm 14mm; color: #111; background: #fff; font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif; font-size: 14px; line-height: 1.6; }
   .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; margin-bottom: 6px; }
-  .top .ref { font-weight: 700; direction: ltr; unicode-bidi: embed; }
-  .top .date { direction: ltr; unicode-bidi: embed; }
-  .head { text-align: center; border-bottom: 3px double #111; padding-bottom: 14px; margin-bottom: 18px; }
-  .brand { font-family: "Oswald", "Arial Narrow", Arial, sans-serif; font-size: 34px; font-weight: 700; letter-spacing: 0.22em; direction: ltr; }
+  .top .ref { font-weight: 700; letter-spacing: 0.04em; }
+  .top .date { color: #444; }
+  .head { text-align: center; margin: 8px 0 18px; }
+  .brand { font-size: 28px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
   table { width: 100%; border-collapse: collapse; }
-  th, td { border: 1px solid #111; padding: 7px 10px; text-align: right; }
-  th.label { width: 28%; background: #f2f2f2; font-weight: 700; }
-  .products th { background: #111; color: #fff; font-size: 13px; }
+  .info { margin-bottom: 16px; }
+  .info th.label { text-align: right; width: 28%; color: #555; font-weight: 600; padding: 4px 8px 4px 0; vertical-align: top; }
+  .info td { padding: 4px 0; }
+  .products th { background: #111; color: #fff; font-size: 13px; padding: 8px 6px; }
+  .products td { border-bottom: 1px solid #ddd; padding: 8px 6px; }
   .c { text-align: center; }
   td.n, th.n { white-space: nowrap; }
   .products .n { width: 1%; }

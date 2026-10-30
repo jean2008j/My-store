@@ -6,7 +6,7 @@ export function QrMark({ value }: { value: string }) {
 
   useEffect(() => {
     let live = true;
-    void toDataURL(value || "OWL STORE", {
+    void toDataURL(value || "My Store", {
       margin: 1,
       width: 280,
       color: { dark: "#0c0c0c", light: "#f4f1ea" },
@@ -18,9 +18,6 @@ export function QrMark({ value }: { value: string }) {
     };
   }, [value]);
 
-  if (!src) {
-    return <div className="aspect-square w-full bg-fg" aria-hidden />;
-  }
-
-  return <img src={src} alt={`Sham Cash code for ${value}`} className="aspect-square w-full" />;
+  if (!src) return <div className="aspect-square w-full animate-pulse bg-line/40" />;
+  return <img src={src} alt="" className="block h-auto w-full" />;
 }
