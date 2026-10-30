@@ -5,7 +5,7 @@ import { useOwl } from "@/lib/store/owl-store";
 
 export const Route = createFileRoute("/story")({
   head: () => ({
-    meta: [{ title: "Our story — ATHAR & OWL" }],
+    meta: [{ title: "Our story — My Store" }],
   }),
   component: Page,
 });
