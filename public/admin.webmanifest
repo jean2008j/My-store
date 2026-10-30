@@ -1,7 +1,7 @@
 {
-  "name": "ATHAR & OWL — لوحة التحكم",
-  "short_name": "Athar Admin",
-  "description": "لوحة تحكم متجر ATHAR & OWL",
+  "name": "My Store — لوحة التحكم",
+  "short_name": "My Store Admin",
+  "description": "لوحة تحكم متجر My Store",
   "id": "/admin",
   "start_url": "/admin",
   "scope": "/admin",
