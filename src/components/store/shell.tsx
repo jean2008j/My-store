@@ -5,42 +5,29 @@ import {
   trackVisit,
 } from "@/lib/db-service";
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Instagram,
-  MapPin,
-  Menu,
-  MessageCircle,
-  Minus,
-  Moon,
-  Plus,
-  Search,
-  Send,
-  ShoppingBag,
-  Sun,
-  X,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
-import { ProductCard } from "@/components/store/product-card";
 import { StoreGate, useStoreGate } from "@/components/store/store-gate";
 import {
   CATALOG_VERSION,
   cloneSeed,
   defaultSettings,
-  matchesCat,
-  money,
-  NAV,
-  catLabel,
   normalizeContent,
-  sizeLeft,
-  type CartLine,
 } from "@/lib/store/catalog";
-import { useI18n, useLang } from "@/lib/i18n";
+import { useLang } from "@/lib/i18n";
 import { useOwl } from "@/lib/store/owl-store";
 import { refreshProducts } from "@/lib/store/refresh";
-import { cn } from "@/lib/utils";
+import {
+  HeaderControls,
+  MobileCategoryBar,
+  Announcement,
+  MobileMenu,
+  NavLinks,
+  Footer,
+  SearchPanel,
+  CartDrawer,
+} from "@/components/store/shell-helpers";
 
 export function Shell() {
   const lang = useOwl((state) => state.lang);
@@ -57,6 +44,7 @@ export function Shell() {
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     if (isAdmin) {
+      // The admin is always Arabic — don't touch the customer's saved language.
       document.documentElement.lang = "ar";
       document.documentElement.dir = "rtl";
       return;
@@ -93,6 +81,7 @@ export function Shell() {
       void fetchProductsFromDatabase().then((rows) => {
         if (live && rows.length) useOwl.setState({ products: rows });
       });
+      // Sham Cash account + QR set by the admin (so every customer sees the same ones)
       void fetchPaymentSettings().then((pay) => {
         if (!live || !pay) return;
         useOwl.setState((current) => ({
@@ -116,11 +105,13 @@ export function Shell() {
     };
   }, []);
 
+  // Daily visitors counter: once per day per browser, never from the admin pages.
   useEffect(() => {
     if (isAdmin) return;
     void trackVisit();
   }, [isAdmin]);
 
+  // Customers see sold-out sizes without reloading: refresh stock every minute and when the tab returns.
   useEffect(() => {
     if (isAdmin) return;
     const refresh = () => {
@@ -166,6 +157,7 @@ export function Shell() {
     return () => window.removeEventListener("keydown", onKey);
   }, [setCartOpen, setSearchOpen]);
 
+  // Store password: customers must type it before seeing the shop (the admin pages are never gated).
   const gate = useStoreGate(isAdmin);
   if (!isAdmin && gate.status !== "open") {
     return (
@@ -186,6 +178,7 @@ export function Shell() {
       >
         Skip to content
       </a>
+      {/* Tap-outside layer for the mobile menu */}
       {menuOpen ? (
         <button
           type="button"
@@ -195,11 +188,13 @@ export function Shell() {
           onClick={() => setMenuOpen(false)}
         />
       ) : null}
+      {/* Floating glass header — zero height so the page (hero) shows through behind it */}
       <div className="sticky top-0 z-30 h-0" dir="ltr">
         <div className="px-3 pt-2 lg:px-5">
           <div className="overflow-hidden rounded-xl bg-white/75 text-black shadow-lg backdrop-blur-xl backdrop-saturate-150 lg:bg-black/40 lg:text-white">
             <Announcement text={announcement} />
             <header className="px-3 lg:px-6">
+              {/* Mobile: burger (far left) · brand (centre) · language, theme, search, bag (bag far right) */}
               <div className="flex items-center py-1.5 lg:hidden">
                 <button
                   type="button"
@@ -210,6 +205,7 @@ export function Shell() {
                 >
                   {menuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
                 </button>
+                {/* centred in the free space between the burger and the controls */}
                 <div className="flex min-w-0 flex-1 justify-center">
                   <Link
                     to="/"
@@ -221,9 +217,11 @@ export function Shell() {
                 </div>
                 <HeaderControls count={count} onOpen={() => setMenuOpen(false)} />
               </div>
+              {/* Mobile: scrollable category strip under the brand row */}
               <div className="lg:hidden">
                 <MobileCategoryBar onNavigate={() => setMenuOpen(false)} />
               </div>
+              {/* Desktop: logo | nav | controls */}
               <div className="hidden min-h-[85px] grid-cols-[1fr_auto_1fr] items-center gap-6 py-3 lg:grid">
                 <div className="flex items-center justify-start">
                   <Link
