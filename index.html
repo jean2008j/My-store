@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATHAR &amp; OWL</title>
+    <meta name="description" content="ATHAR &amp; OWL — heavyweight streetwear. New drops, hoodies, tees, and sets. Sham Cash and local shipping." />
+    <meta name="theme-color" content="#0c0c0c" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Oswald:wght@500;600;700&family=Cairo:wght@500;600;700&display=swap" />
+  <script>
+      try {
+        var t = JSON.parse(localStorage.getItem("owl-store") || "{}").state;
+        if (t && t.theme === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+    <script>
+      // Admin app: only the /admin page is installable (the store itself is not).
+      try {
+        if (location.pathname === "/admin" || location.pathname.indexOf("/admin/") === 0) {
+          var m = document.createElement("link");
+          m.rel = "manifest";
+          m.href = "/admin.webmanifest";
+          document.head.appendChild(m);
+          var old = document.querySelector('link[rel="apple-touch-icon"]');
+          if (old) old.remove();
+          var a = document.createElement("link");
+          a.rel = "apple-touch-icon";
+          a.href = "/admin/apple-touch-icon.png";
+          document.head.appendChild(a);
+          document.title = "Admin — ATHAR & OWL";
+          if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+              navigator.serviceWorker.register("/admin-sw.js", { scope: "/admin" }).catch(function () {});
+            });
+          }
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
